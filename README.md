@@ -209,7 +209,7 @@ I think we should use the tools we have, and AI is a really good one, that we sh
 
 Basically, i asked the chat GPT to make code for specific things in the code, like: 
 
-"how i can make something happen when a player pressesthe right clicl of the mouse in pygame?" it provided me the code
+"how i can make something happen when a player presses the right click of the mouse in pygame?" it provided me the code
 
 "how i make a 128x128 pixelated screen in python using pygame?" it gave me the idea for using rects and provided me the code
 
