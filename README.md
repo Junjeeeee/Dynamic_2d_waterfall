@@ -15,99 +15,133 @@ In this relatory i'll talk about the folowing topics:
 
 This is the first chapter because i highly recommend you test the project before reading the other chapters.
 
-Run the project by typing python3 projeto.py in the terminal, be sure to have pygame installed.
+- Run the project by typing python3 projeto.py in the terminal, be sure to have pygame installed.
 Inside the project, you'll see the waterfall, you can interact with it with the folowing commands:
 
-press 'a', you'll select water, then, by clicking the left button of the mouse, you'll put water inside the pixel you're pointing.
+- press 'a', you'll select water, then, by clicking the left button of the mouse, you'll put water inside the pixel you're pointing.
 
-press 'p' to select rock, rocks change the dynamics of the water.
+- press 'p' to select rock, rocks change the dynamics of the water.
 
-press 'f' to select a water source.
+- press 'f' to select a water source.
 
-right click on the mouse delete items, be sure to have selected 'p' to delete rocks, 'a' to delete water in one point, or 'f' to remove water sources.
+- right click on the mouse delete items, be sure to have selected 'p' to delete rocks, 'a' to delete water in one point, or 'f' to remove water sources.
 
-press 'r' to restart the map.
+- press 'r' to restart the map.
 
-press '1', followed by 'r' to load a toboggan map.
+- press '1', followed by 'r' to load a toboggan map.
 
-In this map, i used different kinds of rocks, normal rocks make a lot of water to alternate between two pixels, more on that later.
+- In this map, i used different kinds of rocks, normal rocks make a lot of water to alternate between two pixels, more on that later.
 
-press 'd' to select a rock that only move the water above it to the right side.
+- press 'd' to select a rock that only move the water above it to the right side.
 
-press 'e' to select a rock that only move the water above it to the left side.
+- press 'e' to select a rock that only move the water above it to the left side.
 
-press '3', followed by 'r' to select a map that has toboggan features, but dont work, because it is made with normal rocks. (remember to delete the rock below the initial water source)
+- press '3', followed by 'r' to select a map that has toboggan features, but dont work, because it is made with normal rocks. (remember to delete the rock below the initial water source)
 this map, after a long time, will fill the cup, if you havce 10minutes to spare, you could test it by yourself, putting more fonts helps.
 
-press '4' followed by 'r' to select an interative map, if you want to have a challenge, try to fill the four recipients without letting water leak out.
+- press '4' followed by 'r' to select an interative map, if you want to have a challenge, try to fill the four recipients without letting water leak out.
 
-press '2' followed by 'r' to select a special map for me. It is a really simple map, but i coded the position of every pixel manually, what i automated by printing the command to add a pixel in the terminal every time you put one.
+- press '2' followed by 'r' to select a special map for me. It is a really simple map, but i coded the position of every pixel manually, what i automated by printing the command to add a pixel in the terminal every time you put one.
 
-that's all, press '0' followed by 'r' to go to the singular waterfall map, have fun!
+- that's all, press '0' followed by 'r' to go to the singular waterfall map, have fun!
 
 ## 2- How it was made
 
 The waterfall was made by using similar concepts to the Markiv chain, i'll explain it briefly
 follow the following graph:
+
 ![image](https://github.com/Junjeeeee/Dynamic_2d_waterfall/assets/94764591/6af3e9fe-30e9-4095-9fe9-2aab627b2c77)
+
 
 in this graph, every vertex has the sum of all it's exit edges adding one, this garantees that the sum of all vertex values in a given time will be the same to every other, and also guarantees convergion.
 
 
 ![image](https://github.com/Junjeeeee/Dynamic_2d_waterfall/assets/94764591/51e4a9ce-5df5-4ccf-b6f1-fc3fbc737210)
 
+
 here we can see the matrix representation of that concept, the vector have the initial values of the vertixes, and the matrix, called 'transiction matrix', have the edges of the graph.
 By multiplying the vector to the matrix, the vector has the value of the system after one transiction, by aplying again, we have the system after two transictions. In a nutshell, we have the fixed point system:
 X(n+1) = Ax(n).
 
-But, how we can make a waterfall with this concept? Thats simple! first we will define the size of the screen, i choose 128x128 pixels.
+
+
+But, how we can make a waterfall with this concept?
+Thats simple! first we will define the size of the screen, i choose 128x128 pixels.
 them, we make the vector contain the amount of water in each pixel, we have an vector with size 16384, and the pixel at the point (x,y) can be fount at the position (128\*y) + x;
 after, we make the transiction matrix with the following rule:
 
+
 ![image](https://github.com/Junjeeeee/Dynamic_2d_waterfall/assets/94764591/159d7a24-62be-4b84-8dca-74f4d41205fc)
+
 
 For each pixel, it gives 75% of the water it has to the pixel below it, 12.5% to the diagonal down left, and 12.5% to the diagonal down right. (i changed it to 12% to both diagonals and 0.5% to both sides (right or left), after).
 The matrix has a size of 16384 x 16384, because the system needs to have the transiction to a pixel to all others, but, as we have only 5 transictions, for a maximum of 7 (because of rocks), the matrix is realy exparse, so, we can take advantage of this to multiply the vector by the matrix really fast.
 
+
 The collumns of the matrix represents the amount of water the pixel i will give, and the lines the amount of water pixel i will receive.
 
+
 Well, now that we have the transiction matrix, we need two more pieces:
+
+
 1- Sinks: The pixels that are in the ends of the screen cant give water to all their neighbors, because some are outside of the bounds, so, they only waste the water, having the sum of their exit edges adding less them 1.
 Sinks make the system thrist after time, as the water will all go away in them, so, we need one more piece:
+
+
 2- Water Sources: Water sources exit edges sum 2, 1 to their neighbours, and 1 to themselves.
 Even having a lot of sinks, a unique Water source makes the system converge to eigenvalue that is not 0, it is really interesting.
+
+
 
 Now we can make our simulation! We only need to multiply the vector to the matrix to find the amount of water at the next frame, so, by multiplying it 64 times per second, we have 64fps!
 And the game runs smothly with 64 multiplications per second.
 
+
+
 How we print out in the screen?
+
 i am using pygame rects, and coloring them based on the amount of water the pixel has, being more dark blue as we have more water.
 
+
+
 a bug: if you see water floating, this is because i dont color pixels with lower water than a threshold.
+
+
 
 All perfect, but, in the current situation, we'll have the system to converge, we want that?
 Well, you can try this by yourself by selecting 'a', water, and keeping pressed the left click of the mouse in a point, you'll see that you'll have a frozen image after some time.
 
+
 ![Screenshot from 2023-12-21 21-29-43](https://github.com/Junjeeeee/Dynamic_2d_waterfall/assets/94764591/4d5cda05-8f14-4e49-a998-cbc114de2d37)
+
 
 It is interesting, but a frozen image dont gives us a cool animation, so, we need a way to change things a bit, i solved it by changing the amount of water the Water Sources give to themselves with time.
 This amount vary between 0.9 and 1.1111... if you change those numbers without taking care, the system could dry out or generate infinitelly more water.
 Sadly this makes the system not linear anymore, you can argue that it is linear if you consider the time being a third dimension, because the animation repeats over time, but i don't researched that.
 
+
 I also made the amount of water in the fountains to reset after some time, this is because of float precision errors, and guarantees the intended behaviour, sadly, this really makes the system not linear.
 But, between the changes, the system is linear.
+
 
 Fun Fact: by developing this project, i saw a lot of systems dry, or the reverse, i cant count how many times i received a error code because some pixel was with "infinite" water in it.
 The above image is purelly ilustrative, even that you can do crazy things like what is happening in the image, the system will not reach "infinite" float values because of what i said above.
 
+
 ![Screenshot from 2023-12-21 21-36-36](https://github.com/Junjeeeee/Dynamic_2d_waterfall/assets/94764591/cd6d9508-bb85-429d-a3d2-4737d4d8493c)
 
+
 Now, lets talk about Rocks!
+
 Rocks change the transictions of all 8 pixels around them.
 when we add a rock, it calls the function attaqua() to every neighbor pixel.
+
+
 This function sets the transiction of the pixels by folowing this rule, starting from top to down, left to right: [0.1, 0.1, 0.1, 50, 0, 50, 1250, 7500, 1250]
 but, for each rock in the respective positions, we put an 0 in the position, for exemple, it a pixel has a rock above, below and to its diagonal left, the vector would be
 [0.1, 0, 0.1, 50, 0, 50, 0, 0, 1250].
+
+
 After that, we make the final transictions, by dividing the value 1 to the vector respecting the weights of the vector above.
 Adding rocks was such a challenge! Right and Left rocks have values set to 0 before checking if it has rocks in those positions.
 
