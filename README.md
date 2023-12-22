@@ -219,7 +219,9 @@ Basically, i asked the chat GPT to make code for specific things in the code, li
 
 Basically, i asked for specific programming questions, as i never used pygame before.
 
-As programming uses a lot of tests, we can always review the code, and the AI is really good at it, it was really helpful using it, and i only got time to work on the main things of the project because i was not losing a lot of time learning how to use python, numpy and pygame specific things.
+As programming uses a lot of tests, we can always review the code, and the AI is really good at it, we can trust AI for that.
+
+It was really helpful using it, and i only got time to work on the main things of the project because i was not losing a lot of time learning how to use python, numpy and pygame specific things.
 
 Please don't misunderstand, i learned a lot of python, pygame and numpy, but in a different way.
 
