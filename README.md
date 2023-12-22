@@ -53,7 +53,7 @@ follow the following graph:
 ![image](https://github.com/Junjeeeee/Dynamic_2d_waterfall/assets/94764591/6af3e9fe-30e9-4095-9fe9-2aab627b2c77)
 
 
-in this graph, every vertex has the sum of all it's exit edges adding one, this garantees that the sum of all vertex values in a given time will be the same to every other, and also guarantees convergion.
+In this graph, every vertex has the sum of all it's exit edges adding one, this garantees that the sum of all vertex values in a given time will be the same to every other, and also guarantees convergion.
 
 
 ![image](https://github.com/Junjeeeee/Dynamic_2d_waterfall/assets/94764591/51e4a9ce-5df5-4ccf-b6f1-fc3fbc737210)
@@ -100,11 +100,11 @@ And the game runs smothly with 64 multiplications per second.
 
 How we print out in the screen?
 
-i am using pygame rects, and coloring them based on the amount of water the pixel has, being more dark blue as we have more water.
+I am using pygame rects, and coloring them based on the amount of water the pixel has, being more dark blue as we have more water.
 
 
 
-a bug: if you see water floating, this is because i dont color pixels with lower water than a threshold.
+A bug: if you see water floating, this is because i dont color pixels with lower water than a threshold.
 
 
 
