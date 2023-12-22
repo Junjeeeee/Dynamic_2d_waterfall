@@ -2,11 +2,17 @@
 
 My project is an 2D waterfall made with a dynamic linear system, using concepts for Markov Chains.
 In this relatory i'll talk about the folowing topics:
+
 1- How to interact with the project.
+
 2- How it was made
+
 3- A take on convergion and eigenvectors
+
 4- Limitations and Advantages
+
 5- Future projects
+
 6- How i used Chat Gpt for help
 
 ## 1- How to interact with the project.
@@ -22,7 +28,7 @@ Inside the project, you'll see the waterfall, you can interact with it with the 
 
 - press 'p' to select rock, rocks change the dynamics of the water.
 
-- press 'f' to select a water source.
+- press 'f' to select a water source. water sources generate water to the system.
 
 - right click on the mouse delete items, be sure to have selected 'p' to delete rocks, 'a' to delete water in one point, or 'f' to remove water sources.
 
@@ -37,7 +43,7 @@ Inside the project, you'll see the waterfall, you can interact with it with the 
 - press 'e' to select a rock that only move the water above it to the left side.
 
 - press '3', followed by 'r' to select a map that has toboggan features, but dont work, because it is made with normal rocks. (remember to delete the rock below the initial water source)
-this map, after a long time, will fill the cup, if you havce 10minutes to spare, you could test it by yourself, putting more fonts helps.
+this map, after a long time, will fill the cup, if you havce 10 minutes to spare, you could test it by yourself, putting more water sources helps.
 
 - press '4' followed by 'r' to select an interative map, if you want to have a challenge, try to fill the four recipients without letting water leak out.
 
@@ -47,7 +53,7 @@ this map, after a long time, will fill the cup, if you havce 10minutes to spare,
 
 ## 2- How it was made
 
-The waterfall was made by using similar concepts to the Markiv chain, i'll explain it briefly
+The waterfall was made by using similar concepts to the Markov chain, i'll explain it briefly
 follow the following graph:
 
 ![image](https://github.com/Junjeeeee/Dynamic_2d_waterfall/assets/94764591/6af3e9fe-30e9-4095-9fe9-2aab627b2c77)
@@ -74,7 +80,7 @@ after, we make the transiction matrix with the following rule:
 ![image](https://github.com/Junjeeeee/Dynamic_2d_waterfall/assets/94764591/159d7a24-62be-4b84-8dca-74f4d41205fc)
 
 
-For each pixel, it gives 75% of the water it has to the pixel below it, 12.5% to the diagonal down left, and 12.5% to the diagonal down right. (i changed it to 12% to both diagonals and 0.5% to both sides (right or left), after).
+For each pixel, it gives 75% of the water it has to the pixel below it, 12.5% to the diagonal down left, and 12.5% to the diagonal down right. (i changed it to 12% to both diagonals and 0.5% to both sides (right or left), later).
 The matrix has a size of 16384 x 16384, because the system needs to have the transiction to a pixel to all others, but, as we have only 5 transictions, for a maximum of 7 (because of rocks), the matrix is realy exparse, so, we can take advantage of this to multiply the vector by the matrix really fast.
 
 
@@ -89,7 +95,7 @@ Sinks make the system thrist after time, as the water will all go away in them, 
 
 
 2- Water Sources: Water sources exit edges sum 2, 1 to their neighbours, and 1 to themselves.
-Even having a lot of sinks, a unique Water source makes the system converge to eigenvalue that is not 0, it is really interesting.
+Even having a lot of sinks, a unique Water source makes the system converge to eigenvalue of 1, it is really interesting.
 
 
 
@@ -137,15 +143,16 @@ Rocks change the transictions of all 8 pixels around them.
 when we add a rock, it calls the function attaqua() to every neighbor pixel.
 
 
-This function sets the transiction of the pixels by folowing this rule, starting from top to down, left to right: [0.1, 0.1, 0.1, 50, 0, 50, 1250, 7500, 1250]
-but, for each rock in the respective positions, we put an 0 in the position, for exemple, it a pixel has a rock above, below and to its diagonal left, the vector would be
+This function sets the transiction of the pixels by folowing this rule: first, we pick a specific vector with weighted values to the 8 directions,starting from top to down, left to right: [0.1, 0.1, 0.1, 50, 0, 50, 1250, 7500, 1250]
+but, for each rock in the respective positions, we put an 0 in the position, for example, it a pixel has a rock above, below and to its diagonal left, the vector would be
 [0.1, 0, 0.1, 50, 0, 50, 0, 0, 1250].
 
 
-After that, we make the final transictions, by dividing the value 1 to the vector respecting the weights of the vector above.
+After that, we make the final transictions, by dividing the value 1 to the vector respecting the current vector weights.
+
 Adding rocks was such a challenge! Right and Left rocks have values set to 0 before checking if it has rocks in those positions.
 
-Those two are needed because, if we give equal value to right or left, i'll give water to my neighbor, and my neighbor will give water to me, making a loop, and that makes the system converge very slowly.
+Those two are needed because, if we give equal value to right or left, i'll give water to my neighbor, and my neighbor will give water to me, making a loop, and that makes an infinite loop.
 
 Thats it, that is how i made almost everything in the project, the things that are missing i will ignore because is not relevant enought for this relatory, but you could read the code if you want to know how i made specific things.
 
@@ -158,8 +165,10 @@ I didn't made a deep study about this, but i'll explain why the system converges
 So, the idea is really simple, every pixel gives water to their neighbors that are not above themselves. The water source will, also, keep the same amount of water in itself.
 We can prove withn induction that all the water will eventually find a Sink.
 
-Base case: the pixel position is one pixel above the sink, in the next iteration, 90% of the water will go to the sink, 0.5% to the right and left, the next iteration, 99% of those 0.5% will go to the sink, this, with a limit tending to infinite, is equal to 0, all water going to the Sink.
+Base case: the pixel position is one pixel above the sink, in the next iteration, 99% of the water will go to the sink, 0.5% to the right and left, the next iteration, 99% of those 0.5% will go to the sink, this, with a limit tending to infinite, is equal to 0, all water going to the Sink.
+
 Induction Hipothesis: The water in position x < y will go out to a sink.
+
 Pass of induction: the water in a position y will, 99% go to some position below it with (y-1), that is <y, so, they'll reach the sink, 99% of the 1% left will go to (y-1) next iteration, with a limit tending to infinite, is equal to 0, all water going to (y-1), so, all water going to the Sinks.
 
 So, all water that go out of the Water Sources reach the sinks, when we reach that point, the only water we will have in the system is the water in the water source, in some sinks, and in the pixels in the way between waer sources and sinks.
@@ -173,21 +182,21 @@ with more than a water fountain, we reach this situation only if a water fountai
 
 ### Limitations:
 
--We can't simulate inertia, we cant store the velocity of the water in certain point, so, all water falls down with the specified rules. I think that should be a artesanal non-linear solution for this, but i really dont know how it would be like.
+- We can't simulate inertia, we can't store the velocity of the water in certain point, so, all water falls down with the specified rules. I think that should be a artesanal non-linear solution for this, but i really dont know how it would be like.
 
 - We can't simulate density, a pixel can have infinite amount of water, so, a cup never fills, for example. I have an artesanal idea for solving this, more about that in chapter 5.
 
-- Modelating things are not easy. Take the example of the rocks, for each rock, we had to modify all the transictions of it neighbors. A cool future project is simulating a 5 point star shining, to modelate that, we need to especify the transictions manually, not as easy as setting one transiction to every pixel.
+- Modelating things are not easy. Take the example of the rocks, for each rock, we had to modify all the transictions of it neighbors. A cool future project is simulating a 5 point star shining, to modelate that, we need to especify the transictions manually, not as easy as setting the same transictions to every pixel as the waterfall.
 
-- Long initialization time: We need to makeall transictions in the matrix, that take a long time, this can be way better with concurrency.
+- Long initialization time: We need to make all transictions in the matrix, that take a long time, this can be way better with concurrency.
 
 ### Advantages
 
--it is a interesting take on the water simulation, and it is really cheap! Could be used easily in a game, for example. Try map 1 and 4.
+- It is a interesting take on the water simulation, and it is really cheap! Could be used easily in a game, for example. Try map 1 and 4.
 
--we can expand this idea to 3D easilly, in a 128x128x128 grid, we'll have a vector of size 2097152, the pixel at the position (x,y,z) will be at the vector position (z\*16384) + (128\*y) + x, and the transictions will be between all 9 pixels below the actual pixel, plus a very small amount to the 8 neighbors at the same height. I am only afraid of the initialization time of that.
+- We can expand this idea to 3D easilly, in a 128x128x128 grid, we'll have a vector of size 2097152, the pixel at the position (x,y,z) will be at the vector position (z\*16384) + (128\*y) + x, and the transictions will be between all 9 pixels below the actual pixel, plus a very small amount to the 8 neighbors at the same height. I am only afraid of the initialization time of that.
 
--Modelating thigs is hard, but possible! We can modelate a lot of things that way, a star shining, meteors, fire, slower liquids (we can give the normal pixels to give some water to themselves, but keeping the sum to 1 propriety), infinite possibilities, limited to criativity!
+- Modelating thigs is hard, but possible! We can modelate a lot of things that way, a star shining, meteors, fire, slower liquids (we can give the normal pixels to give some water to themselves, but keeping the sum to 1 propriety), infinite possibilities, limited to criativity!
 
 -Using Markov Chains, maybe (i'm not sure), the student will have some help in the college classes of statistics and probability and Assessment and performance (AD), i really hope so.
 
@@ -197,7 +206,7 @@ with more than a water fountain, we reach this situation only if a water fountai
 
 - Try ways to simulate inertia
 
-- Try ways to simualte density. My current idea is forcing an pixel to expand if it has a lot of water, like, force it to give water to pixels further away than its neigbors. Another idea is to make points with a lot of water to work like rocks, that way we can easily fill a cup, but could give us another problems.
+- Try ways to simulate density. My current idea is forcing an pixel to expand if it has a lot of water, like, force it to give water to pixels further away than its neigbors. Another idea is to make points with a lot of water to work like rocks, that way we can easily fill a cup, but could give us another problems.
 
 - Use concurrency to make the initialization faster.
 
