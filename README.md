@@ -7,8 +7,7 @@ In this relatory i'll talk about the folowing topics:
 3- A take on convergion and eigenvectors
 4- Limitations and Advantages
 5- Future projects
-6- A look into the code
-7- How i used Chat Gpt for help
+6- How i used Chat Gpt for help
 
 ## 1- How to interact with the project.
 ![image](https://github.com/Junjeeeee/Dynamic_2d_waterfall/assets/94764591/910944a7-8152-45dc-b834-6cf7052ea2ab)
@@ -62,7 +61,7 @@ By multiplying the vector to the matrix, the vector has the value of the system 
 X(n+1) = Ax(n).
 
 But, how we can make a waterfall with this concept? Thats simple! first we will define the size of the screen, i choose 128x128 pixels.
-them, we make the vector contain the amount of water in each pixel, we have an vector with size 16384, and the pixel at the point (x,y) can be fount at the position (128*y) + x;
+them, we make the vector contain the amount of water in each pixel, we have an vector with size 16384, and the pixel at the point (x,y) can be fount at the position (128\*y) + x;
 after, we make the transiction matrix with the following rule:
 
 ![image](https://github.com/Junjeeeee/Dynamic_2d_waterfall/assets/94764591/159d7a24-62be-4b84-8dca-74f4d41205fc)
@@ -114,7 +113,7 @@ Adding rocks was such a challenge! Right and Left rocks have values set to 0 bef
 
 Those two are needed because, if we give equal value to right or left, i'll give water to my neighbor, and my neighbor will give water to me, making a loop, and that makes the system converge very slowly.
 
-Thats it, that is how i made almost everything in the project, the things that are missing i will talk about in the chapter 6, or will ignore because is not relevant enought.
+Thats it, that is how i made almost everything in the project, the things that are missing i will ignore because is not relevant enought for this relatory, but you could read the code if you want to know how i made specific things.
 
 ## 2- A take on convergion and eigenvectors:
 
@@ -144,9 +143,44 @@ with more than a water fountain, we reach this situation only if a water fountai
 
 - We can't simulate density, a pixel can have infinite amount of water, so, a cup never fills, for example. I have an artesanal idea for solving this, more about that in chapter 5.
 
-- 
+- Modelating things are not easy. Take the example of the rocks, for each rock, we had to modify all the transictions of it neighbors. A cool future project is simulating a 5 point star shining, to modelate that, we need to especify the transictions manually, not as easy as setting one transiction to every pixel.
 
+- Long initialization time: We need to makeall transictions in the matrix, that take a long time, this can be way better with concurrency.
 
+### Advantages
 
+-it is a interesting take on the water simulation, and it is really cheap! Could be used easily in a game, for example. Try map 1 and 4.
 
+-we can expand this idea to 3D easilly, in a 128x128x128 grid, we'll have a vector of size 2097152, the pixel at the position (x,y,z) will be at the vector position (z\*16384) + (128\*y) + x, and the transictions will be between all 9 pixels below the actual pixel, plus a very small amount to the 8 neighbors at the same height. I am only afraid of the initialization time of that.
+
+-Modelating thigs is hard, but possible! We can modelate a lot of things that way, a star shining, meteors, fire, slower liquids (we can give the normal pixels to give some water to themselves, but keeping the sum to 1 propriety), infinite possibilities, limited to criativity!
+
+-Using Markov Chains, maybe (i'm not sure), the student will have some help in the college classes of statistics and probability and Assessment and performance (AD), i really hope so.
+
+## Future Projects
+
+- Simulate more things
+
+- Try ways to simulate inertia
+
+- Try ways to simualte density. My current idea is forcing an pixel to expand if it has a lot of water, like, force it to give water to pixels further away than its neigbors. Another idea is to make points with a lot of water to work like rocks, that way we can easily fill a cup, but could give us another problems.
+
+- Use concurrency to make the initialization faster.
+
+- Apply this in a game, could be a game that you need to make paths (like the map 4!) to fill recipients. Or some environment of some game, because is satisfatory to watch.
+
+## How i used Chat GPT for help
+
+I think we should use the tools we have, and AI is a really good one, that we should not be ashamed by using it the right way. Because of my belief in that, i will write how i used AI in this project.
+
+Basically, i asked the chat GPT to make code for specific things in the code, like: 
+"how i can make something happen when a player pressesthe right clicl of the mouse in pygame?" it provided me the code
+"how i make a 128x128 pixelated screen in python using pygame?" it gave me the idea for using rects and provided me the code
+"how can i install pygame" it provided me the code, i could just searched by that, my bad.
+"how i can change the fps of the game?" it provided me the code.
+
+Basically, i asked for specific programming questions, as i never used pygame before.
+As programming uses a lot of tests, we can always review the code, and the AI is really good at it, it was really helpful using it, and i only got time to work on the main things of the project because i was not losing a lot of time learning how to use python, numpy and pygame specific things.
+
+Please don't misunderstand, i learned a lot of python, pygame and numpy, but in a different way.
 
