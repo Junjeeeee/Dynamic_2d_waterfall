@@ -208,12 +208,17 @@ with more than a water fountain, we reach this situation only if a water fountai
 I think we should use the tools we have, and AI is a really good one, that we should not be ashamed by using it the right way. Because of my belief in that, i will write how i used AI in this project.
 
 Basically, i asked the chat GPT to make code for specific things in the code, like: 
+
 "how i can make something happen when a player pressesthe right clicl of the mouse in pygame?" it provided me the code
+
 "how i make a 128x128 pixelated screen in python using pygame?" it gave me the idea for using rects and provided me the code
+
 "how can i install pygame" it provided me the code, i could just searched by that, my bad.
+
 "how i can change the fps of the game?" it provided me the code.
 
 Basically, i asked for specific programming questions, as i never used pygame before.
+
 As programming uses a lot of tests, we can always review the code, and the AI is really good at it, it was really helpful using it, and i only got time to work on the main things of the project because i was not losing a lot of time learning how to use python, numpy and pygame specific things.
 
 Please don't misunderstand, i learned a lot of python, pygame and numpy, but in a different way.
